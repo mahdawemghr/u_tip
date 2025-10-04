@@ -31,24 +31,36 @@ class _UTipState extends State<UTip> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('UTip Home')),
-      body: Center(
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.blueAccent,
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Column(
               children: [
                 Text(
-                  "Total Per Person: ",
-                  style: Theme.of(context).textTheme.titleMedium,
+                  'Total Per Person',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
-                  "\$20.13",
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  '\$0.00',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
           ),
-        ),
+        ],
       ),
     );
   }
