@@ -47,6 +47,8 @@ class _UTipState extends State<UTip> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text('Total Per Person', style: style),
                 Text('\$0.00', style: style),
@@ -54,9 +56,40 @@ class _UTipState extends State<UTip> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(left: 70, right: 70),
+            margin: const EdgeInsets.only(left: 70, right: 70, top: 20),
             padding: const EdgeInsets.all(20),
-            child: TextField(keyboardType: TextInputType.number),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: theme.colorScheme.onPrimaryContainer,
+                width: 1,
+              ),
+            ),
+            child: Column(
+              children: [
+                TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.attach_money),
+                    labelText: 'Bill Amount',
+                  ),
+                ),
+                Row(
+                  children: [
+                    const Text('Split'),
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.remove),
+                    ),
+                    const Text('1'),
+                    IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+                  ],
+                ),
+                Text('20.00%'),
+                Slider(value: 0.5, onChanged: (v) {}),
+              ],
+            ),
           ),
         ],
       ),
