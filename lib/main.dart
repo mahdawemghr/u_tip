@@ -30,12 +30,17 @@ class _UTipState extends State<UTip> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    final style = theme.textTheme.titleMedium!.copyWith(
+      color: theme.colorScheme.onPrimary,
+      fontWeight: FontWeight.bold,
+    );
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text('UTiP Home')),
+      appBar: AppBar(title: const Text('UTip')),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
+            margin: const EdgeInsets.only(left: 70, right: 70),
             padding: const EdgeInsets.all(30),
             decoration: BoxDecoration(
               color: theme.colorScheme.primary,
@@ -43,12 +48,16 @@ class _UTipState extends State<UTip> {
             ),
             child: Column(
               children: [
-                Text('Total Per Person', style: theme.textTheme.headlineSmall),
-                Text('\$0.00', style: theme.textTheme.titleLarge),
+                Text('Total Per Person', style: style),
+                Text('\$0.00', style: style),
               ],
             ),
           ),
-          Container(padding: const EdgeInsets.all(20)),
+          Container(
+            margin: const EdgeInsets.only(left: 70, right: 70),
+            padding: const EdgeInsets.all(20),
+            child: TextField(keyboardType: TextInputType.number),
+          ),
         ],
       ),
     );
