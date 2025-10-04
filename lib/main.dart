@@ -31,9 +31,7 @@ class _UTipState extends State<UTip> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('UTiP Home')),
+      appBar: AppBar(centerTitle: true, title: const Text('UTiP Home')),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -50,6 +48,7 @@ class _UTipState extends State<UTip> {
               ],
             ),
           ),
+          Container(padding: const EdgeInsets.all(20)),
         ],
       ),
     );
