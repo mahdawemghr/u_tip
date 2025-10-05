@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
       ),
+      debugShowCheckedModeBanner: false,
       home: const UTip(),
     );
   }
@@ -31,6 +32,10 @@ class UTip extends StatefulWidget {
 class _UTipState extends State<UTip> {
   double _tipPercentage = 0;
   int _personCount = 1;
+  double _billTotall = 0.0;
+  double totalPerPerson() {
+    return (_billTotall + (_billTotall * _tipPercentage)) / _personCount;
+  }
 
   void _incrementPerson() {
     setState(() {
@@ -70,7 +75,7 @@ class _UTipState extends State<UTip> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text('Total Per Person', style: style),
-                Text('BHD 0.00', style: style),
+                Text('BHD ${(totalPerPerson()).toStringAsFixed(3)}', style: style),
               ],
             ),
           ),
@@ -84,9 +89,9 @@ class _UTipState extends State<UTip> {
             child: Column(
               children: [
                 BillAmountField(
-                  billAmount: "100",
+                  billAmount: _billTotall.toString(),
                   onChanged: (value) {
-                    print("value: $value");
+                    _billTotall = value.isEmpty ? 0 : double.parse(value);
                   },
                 ),
                 Padding(
@@ -102,7 +107,7 @@ class _UTipState extends State<UTip> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Tip', style: theme.textTheme.titleSmall),
-                    Text('BHD 0.00'),
+                    Text('BHD ${_billTotall * _tipPercentage}'),
                   ],
                 ),
 
