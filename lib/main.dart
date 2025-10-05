@@ -28,6 +28,7 @@ class UTip extends StatefulWidget {
 }
 
 class _UTipState extends State<UTip> {
+  double _tipPercentage = 0;
   int _personCount = 1;
 
   void _incrementPerson() {
@@ -73,8 +74,8 @@ class _UTipState extends State<UTip> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(left: 70, right: 70, top: 20),
-            padding: const EdgeInsets.all(20),
+            margin: EdgeInsets.only(left: 70, right: 70, top: 20),
+            padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: theme.colorScheme.primary, width: 2),
@@ -94,7 +95,7 @@ class _UTipState extends State<UTip> {
                   onChanged: (String value) {},
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.only(top: 10),
                   child: PersonCounter(
                     theme: theme,
                     personCount: _personCount,
@@ -109,12 +110,22 @@ class _UTipState extends State<UTip> {
                     Text('BHD 0.00'),
                   ],
                 ),
+
                 Padding(
-                  padding: const EdgeInsets.only(top: 15),
+                  padding: EdgeInsets.only(top: 15),
                   child: Column(
                     children: [
-                      Text('20.00%'),
-                      Slider(value: 0.5, onChanged: (v) {}),
+                      Text('${(_tipPercentage*100).round()}%'),
+                      Slider(
+                        value: _tipPercentage,
+                        onChanged: (value) {
+                          setState(() {
+                            _tipPercentage = value;
+                          });
+                        },
+                        divisions: 4,
+                        label: (_tipPercentage * 100).round().toString(),
+                      ),
                     ],
                   ),
                 ),
