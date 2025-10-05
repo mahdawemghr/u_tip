@@ -27,6 +27,22 @@ class UTip extends StatefulWidget {
 }
 
 class _UTipState extends State<UTip> {
+  int _personCount = 1;
+
+  void _incrementPerson() {
+    setState(() {
+      _personCount++;
+    });
+  }
+
+  void _decrementPerson() {
+    setState(() {
+      if (_personCount > 1) {
+        _personCount--;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -40,7 +56,7 @@ class _UTipState extends State<UTip> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            margin: const EdgeInsets.only(left: 70, right: 70),
+            margin: const EdgeInsets.only(left: 70, right: 70, top: 50),
             padding: const EdgeInsets.all(30),
             decoration: BoxDecoration(
               color: theme.colorScheme.primary,
@@ -51,7 +67,7 @@ class _UTipState extends State<UTip> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text('Total Per Person', style: style),
-                Text('\$0.00', style: style),
+                Text('BHD 0.00', style: style),
               ],
             ),
           ),
@@ -60,34 +76,64 @@ class _UTipState extends State<UTip> {
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: theme.colorScheme.onPrimaryContainer,
-                width: 1,
-              ),
+              border: Border.all(color: theme.colorScheme.primary, width: 2),
             ),
             child: Column(
               children: [
                 TextField(
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.attach_money),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    prefixIcon: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Text('BHD ')],
+                    ),
                     labelText: 'Bill Amount',
+                  ),
+                  onChanged: (String value) {},
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Split', style: theme.textTheme.titleSmall),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              _decrementPerson();
+                            },
+                            icon: const Icon(Icons.remove),
+                          ),
+                          Text('$_personCount'),
+                          IconButton(
+                            onPressed: () {
+                              _incrementPerson();
+                            },
+                            icon: const Icon(Icons.add),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Split'),
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.remove),
-                    ),
-                    const Text('1'),
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+                    Text('Tip', style: theme.textTheme.titleSmall),
+                    Text('BHD 0.00'),
                   ],
                 ),
-                Text('20.00%'),
-                Slider(value: 0.5, onChanged: (v) {}),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Column(
+                    children: [
+                      Text('20.00%'),
+                      Slider(value: 0.5, onChanged: (v) {}),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
