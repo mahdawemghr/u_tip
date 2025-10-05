@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:u_tip/widgets/bill_amount_field.dart';
 import 'package:u_tip/widgets/persont_counter.dart';
 
 void main() {
@@ -82,17 +83,11 @@ class _UTipState extends State<UTip> {
             ),
             child: Column(
               children: [
-                TextField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    prefixIcon: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Text('BHD ')],
-                    ),
-                    labelText: 'Bill Amount',
-                  ),
-                  onChanged: (String value) {},
+                BillAmountField(
+                  billAmount: "100",
+                  onChanged: (value) {
+                    print("value: $value");
+                  },
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 10),
@@ -115,7 +110,7 @@ class _UTipState extends State<UTip> {
                   padding: EdgeInsets.only(top: 15),
                   child: Column(
                     children: [
-                      Text('${(_tipPercentage*100).round()}%'),
+                      Text('${(_tipPercentage * 100).round()}%'),
                       Slider(
                         value: _tipPercentage,
                         onChanged: (value) {
