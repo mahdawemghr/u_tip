@@ -7,33 +7,40 @@ class PersonCounter extends StatelessWidget {
     required int personCount,
     required this.decrementPerson,
     required this.incrementPerson,
+    required this.style,
+    required this.iconColor,
   }) : _personCount = personCount;
 
   final ThemeData theme;
   final int _personCount;
   final VoidCallback decrementPerson;
   final VoidCallback incrementPerson;
+  final TextStyle style;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('Split', style: theme.textTheme.titleSmall),
+        Text('Split', style: style),
         Row(
           children: [
             IconButton(
               onPressed: () {
                 decrementPerson();
               },
-              icon: const Icon(Icons.remove),
+              icon: Icon(Icons.remove, color: iconColor),
             ),
-            Text('$_personCount'),
+            Text(
+              '$_personCount',
+              style: style.copyWith(fontWeight: FontWeight.normal),
+            ),
             IconButton(
               onPressed: () {
                 incrementPerson();
               },
-              icon: const Icon(Icons.add),
+              icon: Icon(Icons.add, color: iconColor),
             ),
           ],
         ),

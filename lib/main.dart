@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:u_tip/provider/ThemProvider.dart';
 import 'package:u_tip/provider/TipCalculatorModel.dart';
 import 'package:u_tip/widgets/bill_amount_field.dart';
-import 'package:u_tip/widgets/persont_counter.dart';
+import 'package:u_tip/widgets/person_counter.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => Tipcalculatormodel(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Tipcalculatormodel()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -39,19 +43,52 @@ class UTip extends StatefulWidget {
 class _UTipState extends State<UTip> {
   @override
   Widget build(BuildContext context) {
+    //? intilizing _______________________________________________________________________
+    final tipCalc = Provider.of<Tipcalculatormodel>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
     var theme = Theme.of(context);
     final style = theme.textTheme.titleMedium!.copyWith(
-      color: theme.colorScheme.onPrimary,
+      color: themeProvider.isDarkMode ? Colors.white : Colors.black,
       fontWeight: FontWeight.bold,
     );
-    final tipCalc = Provider.of<Tipcalculatormodel>(context);
+
+    //? Scaffold Widget for the main structure of the app _________________________________
     return Scaffold(
-      appBar: AppBar(title: const Text('UTip')),
+      backgroundColor: themeProvider.isDarkMode
+          ? Colors.grey[900]
+          : Colors.grey[200],
+      //? AppBar Widget __________________________________________________________________
+      appBar: AppBar(
+        title: Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Text(
+            'UTip',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+        backgroundColor: theme.colorScheme.primary,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: IconButton(
+              onPressed: () {
+                themeProvider.toggleTheme();
+              },
+              icon: themeProvider.isDarkMode
+                  ? Icon(Icons.nightlight_outlined, color: Colors.white)
+                  : Icon(Icons.wb_sunny_outlined, color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+
+      //? Body Widget ____________________________________________________________________
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          //? Total Per Person Container _________________________________________________
           Container(
-            margin: const EdgeInsets.only(left: 70, right: 70, top: 50),
+            margin: const EdgeInsets.all(20),
             padding: const EdgeInsets.all(30),
             decoration: BoxDecoration(
               color: theme.colorScheme.primary,
@@ -61,17 +98,22 @@ class _UTipState extends State<UTip> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('Total Per Person', style: style),
+                Text(
+                  'Total Per Person',
+                  style: style.copyWith(color: Colors.white),
+                ),
                 Text(
                   'BHD ${(tipCalc.totalPerPerson()).toStringAsFixed(3)}',
-                  style: style,
+                  style: style.copyWith(color: Colors.white),
                 ),
               ],
             ),
           ),
+
+          //? Input Section Container ____________________________________________________
           Container(
-            margin: EdgeInsets.only(left: 70, right: 70, top: 20),
-            padding: EdgeInsets.all(20),
+            margin: EdgeInsets.only(left: 20, right: 20),
+            padding: EdgeInsets.all(40),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: theme.colorScheme.primary, width: 2),
@@ -85,6 +127,7 @@ class _UTipState extends State<UTip> {
                         ? 0
                         : double.parse(value);
                   },
+                  style: style,
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 10),
@@ -93,13 +136,20 @@ class _UTipState extends State<UTip> {
                     personCount: tipCalc.personCount,
                     decrementPerson: tipCalc.decrementPerson,
                     incrementPerson: tipCalc.incrementPerson,
+                    style: style,
+                    iconColor: themeProvider.isDarkMode
+                        ? Colors.white
+                        : Colors.black,
                   ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Tip', style: theme.textTheme.titleSmall),
-                    Text('BHD ${tipCalc.billTotall * tipCalc.tipPercentage}'),
+                    Text('Tax', style: style),
+                    Text(
+                      'BHD ${(tipCalc.billTotall * tipCalc.tipPercentage).round()}',
+                      style: style.copyWith(fontWeight: FontWeight.normal),
+                    ),
                   ],
                 ),
 
@@ -107,13 +157,17 @@ class _UTipState extends State<UTip> {
                   padding: EdgeInsets.only(top: 15),
                   child: Column(
                     children: [
-                      Text('${(tipCalc.tipPercentage * 100).round()}%'),
+                      Text(
+                        '${(tipCalc.tipPercentage * 100).round()}%',
+                        style: style.copyWith(fontWeight: FontWeight.normal),
+                      ),
                       Slider(
+                        max: 0.5,
                         value: tipCalc.tipPercentage,
                         onChanged: (value) {
                           tipCalc.tipPercentage = value;
                         },
-                        divisions: 4,
+                        divisions: 10,
                         label: (tipCalc.tipPercentage * 100).round().toString(),
                       ),
                     ],
