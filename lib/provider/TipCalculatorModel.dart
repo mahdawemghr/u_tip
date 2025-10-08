@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Tipcalculatormodel extends ChangeNotifier {
-  final _tipPercentage = 0.0;
+  double _tipPercentage = 0.0;
   int _personCount = 1;
   double _billTotall = 0.0;
 
@@ -11,6 +11,11 @@ class Tipcalculatormodel extends ChangeNotifier {
 
   set billTotall(double newBillTotall) {
     _billTotall = newBillTotall;
+    notifyListeners();
+  }
+
+  set tipPercentage(double newTipPercentage) {
+    _tipPercentage = newTipPercentage;
     notifyListeners();
   }
 

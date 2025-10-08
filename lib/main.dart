@@ -5,7 +5,12 @@ import 'package:u_tip/widgets/bill_amount_field.dart';
 import 'package:u_tip/widgets/persont_counter.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => Tipcalculatormodel(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -106,7 +111,7 @@ class _UTipState extends State<UTip> {
                       Slider(
                         value: tipCalc.tipPercentage,
                         onChanged: (value) {
-                          tipCalc.billTotall = value;
+                          tipCalc.tipPercentage = value;
                         },
                         divisions: 4,
                         label: (tipCalc.tipPercentage * 100).round().toString(),
