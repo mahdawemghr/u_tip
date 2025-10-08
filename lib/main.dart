@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:u_tip/provider/TipCalculatorModel.dart';
 import 'package:u_tip/widgets/bill_amount_field.dart';
 import 'package:u_tip/widgets/persont_counter.dart';
 
@@ -30,27 +32,6 @@ class UTip extends StatefulWidget {
 }
 
 class _UTipState extends State<UTip> {
-  double _tipPercentage = 0;
-  int _personCount = 1;
-  double _billTotall = 0.0;
-  double totalPerPerson() {
-    return (_billTotall + (_billTotall * _tipPercentage)) / _personCount;
-  }
-
-  void _incrementPerson() {
-    setState(() {
-      _personCount++;
-    });
-  }
-
-  void _decrementPerson() {
-    setState(() {
-      if (_personCount > 1) {
-        _personCount--;
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -58,6 +39,7 @@ class _UTipState extends State<UTip> {
       color: theme.colorScheme.onPrimary,
       fontWeight: FontWeight.bold,
     );
+    final tipCalc = Provider.of<Tipcalculatormodel>(context);
     return Scaffold(
       appBar: AppBar(title: const Text('UTip')),
       body: Column(
@@ -76,7 +58,7 @@ class _UTipState extends State<UTip> {
               children: [
                 Text('Total Per Person', style: style),
                 Text(
-                  'BHD ${(totalPerPerson()).toStringAsFixed(3)}',
+                  'BHD ${(tipCalc.totalPerPerson()).toStringAsFixed(3)}',
                   style: style,
                 ),
               ],
@@ -92,25 +74,27 @@ class _UTipState extends State<UTip> {
             child: Column(
               children: [
                 BillAmountField(
-                  billAmount: _billTotall.toString(),
+                  billAmount: tipCalc.billTotall.toString(),
                   onChanged: (value) {
-                    _billTotall = value.isEmpty ? 0 : double.parse(value);
+                    tipCalc.billTotall = value.isEmpty
+                        ? 0
+                        : double.parse(value);
                   },
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 10),
                   child: PersonCounter(
                     theme: theme,
-                    personCount: _personCount,
-                    decrementPerson: _decrementPerson,
-                    incrementPerson: _incrementPerson,
+                    personCount: tipCalc.personCount,
+                    decrementPerson: tipCalc.decrementPerson,
+                    incrementPerson: tipCalc.incrementPerson,
                   ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Tip', style: theme.textTheme.titleSmall),
-                    Text('BHD ${_billTotall * _tipPercentage}'),
+                    Text('BHD ${tipCalc.billTotall * tipCalc.tipPercentage}'),
                   ],
                 ),
 
@@ -118,16 +102,14 @@ class _UTipState extends State<UTip> {
                   padding: EdgeInsets.only(top: 15),
                   child: Column(
                     children: [
-                      Text('${(_tipPercentage * 100).round()}%'),
+                      Text('${(tipCalc.tipPercentage * 100).round()}%'),
                       Slider(
-                        value: _tipPercentage,
+                        value: tipCalc.tipPercentage,
                         onChanged: (value) {
-                          setState(() {
-                            _tipPercentage = value;
-                          });
+                          tipCalc.billTotall = value;
                         },
                         divisions: 4,
-                        label: (_tipPercentage * 100).round().toString(),
+                        label: (tipCalc.tipPercentage * 100).round().toString(),
                       ),
                     ],
                   ),
