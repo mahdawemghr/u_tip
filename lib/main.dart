@@ -75,7 +75,10 @@ class _UTipState extends State<UTip> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text('Total Per Person', style: style),
-                Text('BHD ${(totalPerPerson()).toStringAsFixed(3)}', style: style),
+                Text(
+                  'BHD ${(totalPerPerson()).toStringAsFixed(3)}',
+                  style: style,
+                ),
               ],
             ),
           ),
